@@ -7,7 +7,7 @@ import 'dotenv/config'
 })();
 
 function main() {
-   // Servcer.start();
+    Servcer.start();
 
-   console.log(envs);
+    //console.log(envs);
 }
