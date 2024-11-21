@@ -1,7 +1,9 @@
 import { CheckService } from "../domain/use-cases/checks/check-service";
+import { CheckServiceMultiple } from "../domain/use-cases/checks/check-service-multiple";
 import { SendEmailLogs } from "../domain/use-cases/emails/send-email-log";
 import { FileSystemDataSource } from "../infraestructure/datasources/file-system.datasources";
 import { MongoLogDataSource } from "../infraestructure/datasources/mongo-logs.datasources";
+import { PostgresLogDataSource } from "../infraestructure/datasources/postgres-logs-datasources";
 import { LogRepositoryImpl } from "../infraestructure/repositories/log.repository.impl";
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/emai.service";
@@ -9,10 +11,16 @@ import { EmailService } from "./email/emai.service";
 /* const fileSystemLogRepository = new LogRepositoryImpl(
     new FileSystemDataSource()
 ) */
-const LogRepository = new LogRepositoryImpl(
-   // new FileSystemDataSource()
-   new FileSystemDataSource
-)
+// const LogRepository = new LogRepositoryImpl(
+//     new FileSystemDataSource()
+//    new MongoLogDataSource
+//    new PostgresLogDataSource
+// )
+
+const fsFyleSystemRepository = new LogRepositoryImpl(new FileSystemDataSource())
+const mongoRepository = new LogRepositoryImpl(new MongoLogDataSource())
+const postgresRepository = new LogRepositoryImpl(new PostgresLogDataSource())
+
 const emailService = new EmailService();
 
 export class Server {
@@ -34,7 +42,7 @@ export class Server {
         emailService.sendEmailWithFileSystemLogs(
             ["16adonaysergio@gmail.com"]
         ); */
-        
+
         /* emailService.sendEmail({
             to: "16adonaysergio@gmail.com",
             subject: "Server Status",
@@ -51,23 +59,27 @@ export class Server {
 
 
         CronService.createJob(
-            "*/2 * * * * *",
+            "*/5 * * * * *",
             () => {
 
-                const baseUrl = "https://dsdsdds.com";
+                const baseUrl = "https://google.com";
                 const localUrl = "http://localhost:3002";
 
-                
-                new CheckService(
+
+                new CheckServiceMultiple(
 
                     () => console.log(`${baseUrl} is running`),
 
-                    ( error ) => console.log(error),
+                    (error) => console.log(error),
 
-                    LogRepository
+                    [
+                        fsFyleSystemRepository,
+                        mongoRepository,
+                        postgresRepository
+                    ]
 
 
-                ).execute( baseUrl );
+                ).execute(baseUrl);
 
             }
         );
