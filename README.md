@@ -15,8 +15,8 @@ Este proyecto implementa una serie de tareas utilizando **Arquitectura Limpia** 
 1. **Clonar el repositorio**:
 
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
-   cd <NOMBRE_DEL_REPOSITORIO>
+   git clone https://github.com/Choster900/noc-task
+   cd noc-task
    ```
 
 2. **Instalar las dependencias**:
