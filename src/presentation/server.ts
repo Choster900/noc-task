@@ -1,4 +1,5 @@
 import { CheckService } from "../domain/use-cases/checks/check-service";
+import { SendEmailLogs } from "../domain/use-cases/emails/send-email-log";
 import { FileSystemDataSource } from "../infraestructure/datasources/file-system.datasources";
 import { LogRepositoryImpl } from "../infraestructure/repositories/log.repository.impl";
 import { CronService } from "./cron/cron-service";
@@ -9,15 +10,26 @@ const fileSystemLogRepository = new LogRepositoryImpl(
     new FileSystemDataSource()
 )
 
+const emailService = new EmailService();
+
 export class Servcer {
     public static start() {
         console.log("server started");
 
+        // COMENTADO PARA NO ENVAR CORREOS LA INICIAR LA APP
+        /* new SendEmailLogs(
+            emailService,
+            fileSystemLogRepository
+        ).execute(
+            ["16adonaysergio@gmail.com"]
+        ); */
 
-        /* const emailService = new EmailService();
+        /* const emailService = new EmailService(
+            fileSystemLogRepository
+        );
 
         emailService.sendEmailWithFileSystemLogs(
-            ["16adonaysergio@gmail.com","serujiosaru7890@gmail.com"]
+            ["16adonaysergio@gmail.com"]
         ); */
         
         /* emailService.sendEmail({
