@@ -1,18 +1,21 @@
 import { CheckService } from "../domain/use-cases/checks/check-service";
 import { SendEmailLogs } from "../domain/use-cases/emails/send-email-log";
 import { FileSystemDataSource } from "../infraestructure/datasources/file-system.datasources";
+import { MongoLogDataSource } from "../infraestructure/datasources/mongo-logs.datasources";
 import { LogRepositoryImpl } from "../infraestructure/repositories/log.repository.impl";
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/emai.service";
 
-
-const fileSystemLogRepository = new LogRepositoryImpl(
+/* const fileSystemLogRepository = new LogRepositoryImpl(
     new FileSystemDataSource()
+) */
+const LogRepository = new LogRepositoryImpl(
+   // new FileSystemDataSource()
+   new FileSystemDataSource
 )
-
 const emailService = new EmailService();
 
-export class Servcer {
+export class Server {
     public static start() {
         console.log("server started");
 
@@ -47,26 +50,26 @@ export class Servcer {
         }); */
 
 
-        // CronService.createJob(
-        //     "*/2 * * * * *",
-        //     () => {
+        CronService.createJob(
+            "*/2 * * * * *",
+            () => {
 
-        //         const baseUrl = "https://google.com";
-        //         const localUrl = "http://localhost:3002";
+                const baseUrl = "https://dsdsdds.com";
+                const localUrl = "http://localhost:3002";
 
                 
-        //         new CheckService(
+                new CheckService(
 
-        //             () => console.log(`${baseUrl} is running`),
+                    () => console.log(`${baseUrl} is running`),
 
-        //             ( error ) => console.log(error),
+                    ( error ) => console.log(error),
 
-        //             fileSystemLogRepository
+                    LogRepository
 
 
-        //         ).execute( baseUrl );
+                ).execute( baseUrl );
 
-        //     }
-        // );
+            }
+        );
     }
 }

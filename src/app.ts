@@ -1,13 +1,22 @@
+import { MongoDatabase } from "./data/mongo";
 import { envs } from "./plugins/envs.plugins";
-import { Servcer } from "./presentation/server";
 import 'dotenv/config'
+import { Server } from "./presentation/server";
 
 (async () => {
     main();
 })();
 
-function main() {
-    Servcer.start();
+async function main() {
+   
 
+    await MongoDatabase.connect(
+        {
+            mongoUrl: envs.MONGO_URL,
+            dbName: envs.MONGO_DB_NAME
+        }
+    )
+
+    Server.start();
     //console.log(envs);
 }

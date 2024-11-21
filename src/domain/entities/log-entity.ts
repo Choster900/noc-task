@@ -22,7 +22,7 @@ export class LogEntity {
 
     constructor(options: LogEntityOptions) {
 
-        const { message, level, createAt = new Date(), origin} = options;
+        const { message, level, createAt = new Date(), origin } = options;
         this.level = level;
         this.message = message;
         this.createAt = createAt;
@@ -39,8 +39,24 @@ export class LogEntity {
             createAt,
             origin
         });
-        
+
         log.createAt = new Date(createAt);
+
+        return log;
+    }
+
+    static fromObject = (object: { [key: string]: any }): LogEntity => {
+
+        const { message, level, createAt, origin } = object;
+
+
+        const log = new LogEntity({
+            level,
+            message,
+            createAt,
+            origin
+        });
+
 
         return log;
     }
